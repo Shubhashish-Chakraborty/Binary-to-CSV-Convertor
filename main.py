@@ -1,9 +1,10 @@
 import pickle
 import csv
+import os
 
-def BinToCSV(fileName , CSVname = "CSVfile"):
+def BinToCSV(FilePath , CSVfileName = "CSVfile"):
 
-    with open(fileName + ".dat", "rb") as f:
+    with open(FilePath + ".dat", "rb") as f:
 
         File_Data = []
 
@@ -16,7 +17,7 @@ def BinToCSV(fileName , CSVname = "CSVfile"):
         
     #WRITING TITLE FOR THE CSV FILE
 
-    with open(CSVname + ".csv", "w", newline="") as f:
+    with open(CSVfileName + ".csv", "w", newline="") as f:
 
 
         HeadingList = []
@@ -36,3 +37,73 @@ def BinToCSV(fileName , CSVname = "CSVfile"):
         wobj = csv.writer(f)
 
         wobj.writerow(CSVheading)
+
+
+
+#Read the Binary File
+
+def ReadBinFile(FilePath):
+
+    with open(FilePath + ".dat", "rb") as f:
+
+        try:
+            while True:
+                print(pickle.load(f))
+        except EOFError:
+            pass
+
+
+while True:
+
+    options = ['1 -> Convert Binary File to CSV' , '2 -> Display Data' , '3 -> Exit']
+
+    for opt in options:
+
+        print(opt)
+    print()
+
+    getChoice = input("Enter your Choice:")
+    print()
+
+    if (getChoice.isdigit()):
+
+        if (int(getChoice) == 1):
+
+
+            pathMain = input("Enter the Binary File Path and Name:")
+            
+            askforCSVname = input("Want to give a Custom name for your CSV file(y/n):[By Default: 'CSVfile']")
+
+            if (askforCSVname.lower() == "y"):
+
+                CSVname = input("Enter the name for the CSV file:")
+
+                BinToCSV(pathMain,CSVname)
+
+            else:
+                
+                
+                BinToCSV(pathMain)
+
+
+
+
+        elif (int(getChoice) == 2):
+
+            pathRead = input("Enter the Binary File Path and Name:")
+
+            ReadBinFile(pathRead)
+
+
+        elif (int(getChoice) == 3):
+
+            print("Program Successfully Terminated !")
+            break
+
+        else:
+
+            print("Enter Valid Choice !!!\n")
+
+    else:
+        
+        print("Enter Valid Choice !!!")
