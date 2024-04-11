@@ -1,11 +1,13 @@
 import pickle
 import csv
+import time
 import os
 
 def BinToCSV(FilePath , CSVfileName = "CSVfile"):
 
     with open(FilePath + ".dat", "rb") as f:
 
+        global File_Data
         File_Data = []
 
         try:
@@ -21,7 +23,7 @@ def BinToCSV(FilePath , CSVfileName = "CSVfile"):
 
 
         HeadingList = []
-        for d in range(len(File_Data)): #3 Times => (0,3,1)
+        for d in range(len(File_Data)):
 
 
             for k in range(len(File_Data[d])):
@@ -34,10 +36,30 @@ def BinToCSV(FilePath , CSVfileName = "CSVfile"):
         
         CSVheading = HeadingList[0 : len(File_Data[d]) : 1]
 
-        wobj = csv.writer(f)
+        wobjH = csv.writer(f)
 
-        wobj.writerow(CSVheading)
+        wobjH.writerow(CSVheading)
+    
+    UploadData_to_CSV(FilePath,CSVfileName)
 
+
+def UploadData_to_CSV(fileName , CSVfileName = "CSVfile"):
+
+    #WRITING DATA FOR THE CSV FILE
+
+    with open(CSVfileName + ".csv", "a", newline="") as f:
+
+        wobjD = csv.writer(f)
+
+
+        for data in range(len(File_Data)):
+
+            AddDataList = []
+            for key in File_Data[data]:
+
+                AddDataList.append(File_Data[data][key])
+
+            wobjD.writerow(AddDataList)
 
 
 #Read the Binary File
@@ -98,7 +120,9 @@ while True:
         elif (int(getChoice) == 3):
 
             print("Program Successfully Terminated !")
+            time.sleep(1)            
             break
+            
 
         else:
 
